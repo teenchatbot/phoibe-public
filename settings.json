@@ -1,0 +1,27 @@
+{
+	"login": 
+		{
+			"username" : "",
+			"password" : ""
+		},
+	"systemsettings": 
+		{
+			"version" : "version 1.6.0 Aphrodite",
+			"whatsnew" : "revamped the like command | Use (.)help to see commands | Please tell a dev if you need assistance or have any bugs"
+		},
+	"radioShit" :
+		{
+			"radioURL" : "",
+			"broadcastURL" : ""
+		},
+		"entrances" :
+		{
+			"entrances" : ["hello", "hi", "your savior is here"]
+		},
+	"OtherInfo" :
+	{
+		"DeeplKey" : "",
+		"NewsKey" : "",
+		"name" : ""
+	}
+}
