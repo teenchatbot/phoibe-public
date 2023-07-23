@@ -27,14 +27,13 @@ import langid
 import os
 import subprocess
 import hashlib
-
-
+import base64
 
 
 
 #get username and shit from the json file
 
-settingsfile = open("settings.json", "r")
+settingsfile = open("json-files/settings.json", "r")
 settingsdata = json.load(settingsfile)
 
 username = settingsdata['login']['username']
@@ -42,41 +41,47 @@ password = settingsdata['login']['password']
 
 entrances = settingsdata['entrances']['entrances']
 
+def logchat():
+    settingsfile = open("json-files/settings.json", "r")
+    settingsdata = json.load(settingsfile)
+    logchat = settingsdata['OtherInfo']['LogChat']
+    settingsfile.close()
+    return logchat
 
 def get_version():
-    settingsfile = open("settings.json", "r")
+    settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     version = settingsdata['systemsettings']['version']
     settingsfile.close()
     return version
 
 def whatsnew():
-    settingsfile = open("settings.json", "r")
+    settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     whatsnew = settingsdata['systemsettings']['whatsnew']
     settingsfile.close()
     return whatsnew
 
 def get_radio():
-    settingsfile = open("settings.json", "r")
+    settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     radiolink = settingsdata['radioShit']['radioURL']
     settingsfile.close()
     return radiolink
 def get_broadcastlink():
-    settingsfile = open("settings.json", "r")
+    settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     broadcastlink = settingsdata['radioShit']['broadcastURL']
     settingsfile.close()
     return broadcastlink
 def get_name():
-    settingsfile = open("settings.json", "r")
+    settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     name = settingsdata['OtherInfo']['name']
     settingsfile.close()
     return name
 def get_deeplkey():
-    settingsfile = open("settings.json", "r")
+    settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     deeplkey = settingsdata['OtherInfo']['DeeplKey']
     settingsfile.close()
@@ -84,25 +89,25 @@ def get_deeplkey():
 #random stuff
 
 def get_jokes():
-    file = open("random.json", "r")
+    file = open("json-files/random.json", "r")
     data = json.load(file)
     jokes = data['jokes']
     joke = random.choice(jokes)
     return joke
 def get_drink():
-    file = open("random.json", "r")
+    file = open("json-files/random.json", "r")
     data = json.load(file)
     drinks = data['drinks']
     drink = random.choice(drinks)
     return drink
 def get_cuss_word():
-    file = open("random.json", "r")
+    file = open("json-files/random.json", "r")
     data = json.load(file)
     words = data['cuss_words']
     word = random.choice(words)
     return word
 def get_insults():
-    file = open("random.json", "r")
+    file = open("json-files/random.json", "r")
     data = json.load(file)
     insults = data['insults']
     insult = random.choice(insults)
@@ -142,7 +147,35 @@ time.sleep(5)
 browser.find_element(By.XPATH, '//*[@id="app"]/div[23]/div[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[3]').click()
 print("entered the chat")
 
+def getVersion():
+    file = open("json-files/settings.json", "r")
+    data = json.load(file)
+    version = data['systemsettings']['version']
+    ver, version, codename = version.split(" ")
+    return version
 
+def saveVersion():
+    version = getVersion()
+    with open("version.txt", "r+") as f:
+        f.write(version)
+
+def checkVersion():
+    installedVersion = getVersion()
+    url = 'https://api.github.com/repos/RPowell-C/qwixly/contents/version.txt'
+    req = requests.get(url)
+    if req.status_code == requests.codes.ok:
+        req = req.json()
+        content = base64.b64decode(req['content'])
+        content = content.decode()
+        ver, version, codename = content.split(" ")
+        print(version)
+        print(installedVersion)
+        if version == installedVersion:
+            send_message("your version is up to date")
+        else:
+            send_message("you need to update to " + version + ", " + "your version is " + installedVersion)
+    else:
+        print("content not found")
 
 
 #reading and stripping down the messages so that they can be proccesses by the bot
@@ -167,9 +200,9 @@ def err(errcode):
     writeToLogs("ERROR - " + users + " " + errcode)
     send_message(errcode)
 
-
+saveVersion()
+checkVersion()
 send_message(random.choice(entrances))
-
 
 
 #time
@@ -213,8 +246,11 @@ def get_station():
         send_message("the station is not broadcasting")
 #like
 def get_like():
-    goodies, thingTheyLike = str3.split(" ", maxsplit=1)
-    with open("likes.json", 'r') as f:
+    try:
+        goodies, thingTheyLike = str3.split(" ", maxsplit=1)
+    except:
+        pass
+    with open("json-files/likes.json", 'r') as f:
         data = json.load(f)
         if users in data:
             data[users].append(thingTheyLike)
@@ -222,24 +258,27 @@ def get_like():
         else:
             data[users] = [thingTheyLike]
             send_message("It's offical, " + users + " likes " + thingTheyLike)
-    with open("likes.json", 'w') as f:
+    with open("json-files/likes.json", 'w') as f:
         json.dump(data, f, indent=4)
 #hate
 def get_hate():
-    goodies, thingTheyLike = str3.split(" ", maxsplit=1)
-    with open("hate.json", 'r') as f:
+    try:
+        goodies, thingTheyLike = str3.split(" ", maxsplit=1)
+    except:
+        pass
+    with open("json-files/hate.json", 'r') as f:
         data = json.load(f)
         if users in data:
             data[users].append(thingTheyLike)
-            send_message("it's offical, " + users + " likes " + thingTheyLike)
+            send_message("it's offical, " + users + " hates " + thingTheyLike)
         else:
             data[users] = [thingTheyLike]
-            send_message("It's offical, " + users + " likes " + thingTheyLike)
-    with open("hate.json", 'w') as f:
+            send_message("It's offical, " + users + " hates " + thingTheyLike)
+    with open("json-files/hate.json", 'w') as f:
         json.dump(data, f, indent=4)   
 #read the likes
 def read_likes():
-    with open("likes.json", 'r') as f:
+    with open("json-files/likes.json", 'r') as f:
         data = json.load(f)
         if users in data:
             send_message(users + " likes " + str(data[users]))
@@ -247,7 +286,7 @@ def read_likes():
             send_message("sorry, you were not found in the file")
 #read the hates
 def read_hate():
-    with open("hate.json", 'r') as f:
+    with open("json-files/hate.json", 'r') as f:
         data = json.load(f)
         if users in data:
             send_message(users + " hates " + str(data[users]))
@@ -380,22 +419,25 @@ def hashfile(file, hashpath):
         f.write(str(m))
 #check the hash
 def check_hash():
-    now = datetime.datetime.now()
-    now = now.strftime('%Y-%m-%d')
-    file = "./logs/" + now + ".log"
-    hashpath = "./hashes/" + now + ".hash"
     try:
-        hashpath = open(hashpath, "r")
+        now = datetime.datetime.now()
+        now = now.strftime('%Y-%m-%d')
+        file = "./logs/" + now + ".log"
+        hashpath = "./hashes/" + now + ".hash"
+        try:
+            hashpath = open(hashpath, "r")
+        except:
+            hashpath = "woogly"
+            send_message("there was a rare error that occured with log validation")
+        hashpath = hashpath.read(128)
+        file = open(file, "rb")
+        file = file.read()
+        m = hashlib.sha3_512(file).hexdigest()
+        if hashpath != str(m):
+            send_message("THE LOG HAS FAILED ITS VALIDATION CHECK, SOMEONE HAS TAMPERED WITH THE LOG FILE")
+            writeToLogs("ERROR ERROR ERROR - logs failed validation check")            
     except:
-        hashpath = "woogly"
-        send_message("there was a rare error that occured with log validation")
-    hashpath = hashpath.read(128)
-    file = open(file, "rb")
-    file = file.read()
-    m = hashlib.sha3_512(file).hexdigest()
-    if hashpath != str(m):
-        send_message("THE LOG HAS FAILED ITS VALIDATION CHECK, SOMEONE HAS TAMPERED WITH THE LOG FILE")
-        writeToLogs("ERROR ERROR ERROR - logs failed validation check")            
+        send_message("something has happened and Reid is too lazy to fix it")
 #What Is Reid Doing
 # gets the active window
 def getWin():
@@ -481,7 +523,7 @@ def cast_vote():
     except IndexError:
         writeToLogs("ERROR - Unexpected IndexError")
         send_message("Unexpected IndexError, please try again")
-    file = open("elect.json", "r")
+    file = open("json-files/elect.json", "r")
     file2 = open("./syscrit/voting/haselected.txt", "r")
     file2 = file2.read()
     file2 = file2.split('\n')
@@ -489,7 +531,7 @@ def cast_vote():
     try:
         if users not in file2:
             data['canidates'][canidate] = data['canidates'][canidate] + 1
-            with open("elect.json", "w") as f:
+            with open("json-files/elect.json", "w") as f:
                 json.dump(data, f, indent=4)
             with open("./syscrit/voting/haselected.txt", "a") as f:
                 f.write(users + "\n")
@@ -502,7 +544,7 @@ def cast_vote():
 
 # sort and then send out the values
 def sort_results():
-    file = open("elect.json", "r")
+    file = open("json-files/elect.json", "r")
     data = json.load(file)
     data = data['canidates']
     sorted_data = dict(sorted(data.items(), key=lambda x: x[1], reverse=True))
@@ -520,7 +562,7 @@ def get_ballot():
         send_message(canidate)
 def wheelie():
     goodies = str3.split(" ")
-    manfile = open("manual.json", "r")
+    manfile = open("json-files/manual.json", "r")
     man = json.load(manfile)
 
     try:
@@ -550,7 +592,7 @@ def fight():
     except:
         writeToLogs("ERROR - [" + users + " caused an IndexError]")
 
-    file = open("values.json", "r")
+    file = open("json-files/values.json", "r")
     data = json.load(file)
     for letter in un1:
         for shit in data['values']:
@@ -604,7 +646,7 @@ def shell():
 #custom messages
 def custom_messages():
     is_there = False
-    f = open("cMessages.json", "r")
+    f = open("json-files/cMessages.json", "r")
     data = json.load(f)
     if users in data['custom_messages']:
         send_message(data['custom_messages'][users])
@@ -620,6 +662,7 @@ lastusr = ""
 
 
 while True:
+    logging = logchat()
     name = get_name()
     regged_users = read_reg_users()
     mini_mod = read_mMods()
@@ -640,10 +683,11 @@ while True:
         pass
     try:
         if lastmsg != str3:
-            writeToLogs(users + " - " + str3)
             print("[" + users + "]")
             print(str3)
             lastmsg = str3
+            if logging == True:
+                writeToLogs(users + " - " + str3)
     except:
         pass
     lastmsg = str3
@@ -777,6 +821,7 @@ while True:
 #read hates 
         if ".hate" in str3:
             writeToLogs("INFO - [" + users + "checked the hates]")
+            read_hate()
 #backlog
         if ".mmreport" in str3:
             if users in mini_mod:
@@ -832,7 +877,7 @@ while True:
 #langhelp
         if ".langhelp" in str3:
             writeToLogs("INFO - [" + users + " needed some langhelp]")
-            auth_key = get_deeplkey()
+            auth_key = "d3fa9b35-f33c-14e8-075b-54b3705f5ee4:fx"
             translator = deepl.Translator(auth_key)
             for language in translator.get_target_languages():
                 send_message(str(f"{language.name} ({language.code})"))
