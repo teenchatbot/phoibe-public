@@ -23,6 +23,7 @@
 		"DeeplKey" : "",
 		"NewsKey" : "",
 		"name" : "",
-		"LogChat" : false
+		"LogChat" : false,
+		"trustedUser" : []
 	}
 }

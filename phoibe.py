@@ -47,7 +47,12 @@ def logchat():
     logchat = settingsdata['OtherInfo']['LogChat']
     settingsfile.close()
     return logchat
-
+def trustedUser():
+    settingsfile = open("json-files/settings.json")
+    settingsdata = json.load(settingsfile)
+    trustedUsers = settingsdata['OtherInfo']['trustedUser']
+    settingsfile.close()
+    return trustedUsers
 def get_version():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
@@ -162,7 +167,7 @@ def saveVersion():
 
 def checkVersion():
     installedVersion = getVersion()
-    url = 'https://api.github.com/repos/RPowell-C/qwixly/contents/version.txt'
+    url = 'https://api.github.com/repos/teenchatbot/botversion/contents/version.txt'
     req = requests.get(url)
     if req.status_code == requests.codes.ok:
         req = req.json()
@@ -567,7 +572,7 @@ def get_ballot():
     f = open("./syscrit/voting/ballot.txt")
     f = f.read()
     f = f.split("\n")
-    for canidate in f:
+    for canidate in f:	
         time.sleep(2)
         send_message(canidate)
 def wheelie():
@@ -672,6 +677,7 @@ lastusr = ""
 
 
 while True:
+    trustedUsers = trustedUser()
     mods = get_mods()
     logging = logchat()
     name = get_name()
@@ -987,7 +993,7 @@ while True:
             send_message("due to a vote taken, the logs are here: https://github.com/RPowell-C/BotLogs/blob/main/chatlog.txt")
 #get results
         if ".results" in str3:
-            if users == "R_Powell" or "Deepestdeep":
+            if users in trustedUsers:
                 sort_results()
             else:
                 writeToLogs("ERROR - [" + users + "tried to access election results]")
@@ -1028,7 +1034,7 @@ while True:
             timez()
 #shell
         if ".sh" in str3:
-            if users == "R_Powell":
+            if users in trustedUsers:
                 shell()
             else:
                 writeToLogs("ERROR WARN ERROR - [" + users + " attempted to use a shell command]")
