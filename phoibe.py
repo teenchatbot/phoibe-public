@@ -261,36 +261,50 @@ def get_station():
         send_message("the station is not broadcasting")
 #like
 def get_like():
+    bannedChars = ["[", "]", "{", "}", "."]
     try:
         goodies, thingTheyLike = str3.split(" ", maxsplit=1)
     except:
         pass
-    with open("json-files/likes.json", 'r') as f:
-        data = json.load(f)
-        if users in data:
-            data[users].append(thingTheyLike)
-            send_message("it's offical, " + users + " likes " + thingTheyLike)
-        else:
-            data[users] = [thingTheyLike]
-            send_message("It's offical, " + users + " likes " + thingTheyLike)
-    with open("json-files/likes.json", 'w') as f:
-        json.dump(data, f, indent=4)
+    try:
+        if bannedChars in thingTheyLike:
+            send_message("fuck off")
+    else:
+            with open("json-files/likes.json", 'r') as f:
+                data = json.load(f)
+                if users in data:
+                    data[users].append(thingTheyLike)
+                    send_message("it's offical, " + users + " likes " + thingTheyLike)
+                else:
+                    data[users] = [thingTheyLike]
+                    send_message("It's offical, " + users + " likes " + thingTheyLike)
+            with open("json-files/likes.json", 'w') as f:
+                json.dump(data, f, indent=4)
+    except:
+        send_message("reid is way too fucking lazy to fix this bug")
 #hate
 def get_hate():
+    bannedChars = ["[", "]", "{", "}", "."]
     try:
         goodies, thingTheyLike = str3.split(" ", maxsplit=1)
     except:
         pass
-    with open("json-files/hate.json", 'r') as f:
-        data = json.load(f)
-        if users in data:
-            data[users].append(thingTheyLike)
-            send_message("it's offical, " + users + " hates " + thingTheyLike)
-        else:
-            data[users] = [thingTheyLike]
-            send_message("It's offical, " + users + " hates " + thingTheyLike)
-    with open("json-files/hate.json", 'w') as f:
-        json.dump(data, f, indent=4)   
+    try:
+        if bannedChars in thingTheyLike:
+            send_message("fuck off")
+    else:
+            with open("json-files/hate.json", 'r') as f:
+                data = json.load(f)
+                if users in data:
+                    data[users].append(thingTheyLike)
+                    send_message("it's offical, " + users + " hates " + thingTheyLike)
+                else:
+                    data[users] = [thingTheyLike]
+                    send_message("It's offical, " + users + " hates " + thingTheyLike)
+            with open("json-files/hate.json", 'w') as f:
+                json.dump(data, f, indent=4)   
+    except:
+        send_message("reid just can't be bothered")
 #read the likes
 def read_likes():
     with open("json-files/likes.json", 'r') as f:
@@ -834,22 +848,26 @@ while True:
 #Like
         if ".ilike" in str3:
             writeToLogs("INFO - [" + users + " liked something]")
-            try:
-                get_like()
-            except Exception as e:
-                send_message(str(e))
+            send_message("This command was disabled after a security vulnerability was found")
+            #try:
+                #get_like()
+            #except Exception as e:
+                #send_message(str(e))
 #hate
         if ".ihate" in str3:
             writeToLogs("INFO - [" + users + "hated something")
-            get_hate()
+            send_message("This command was disabled after a security vulnerablitly was found")
+            #get_hate()
 #read likes
         if ".like" in str3:
             writeToLogs("INFO - [" + users + "checked the likes]")
-            read_likes()
+            send_message("This command was disabled after a security vulnerability was found")
+            #read_likes()
 #read hates 
         if ".hate" in str3:
             writeToLogs("INFO - [" + users + "checked the hates]")
-            read_hate()
+            send_message("This command was disabled after a security vulnerability was found")
+            #read_hate()
 #backlog
         if ".mmreport" in str3:
             if users in mini_mod:
@@ -1033,12 +1051,31 @@ while True:
         if ".zime" in str3:
             timez()
 #shell
-        if ".sh" in str3:
+        if ".zsh" in str3:
             if users in trustedUsers:
                 shell()
             else:
+                if ".sh" in users:
+                    pass
                 writeToLogs("ERROR WARN ERROR - [" + users + " attempted to use a shell command]")
-                send_message(users + " you are absoluteley not allowed to use this command and have been reported")
+                #send_message(users + " you are absoluteley not allowed to use this command and have been reported")
+# crazy
+        if "crazy" in str3:
+            counter = 0
+            while counter != 3:
+                send_message("crazy?")
+                time.sleep(3)
+                send_message("I was crazy once")
+                time.sleep(3)
+                send_message("and they put me in a room")
+                time.sleep(3)
+                send_message("a rubber room with rats")
+                time.sleep(3)
+                send_message("and rats make me crazy")
+                counter += 1
+            else:
+                send_message("and then they executed me for insanity")
+                counter = 0
 
 
 
