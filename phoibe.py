@@ -1,4 +1,4 @@
-#imports
+# imports
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
@@ -16,12 +16,12 @@ import urllib3
 import urllib3.exceptions
 import threading
 import deepl
-#from newsapi import NewsApiClient
+# from newsapi import NewsApiClient
 import re
 import requests
 import smtplib
 import json
-#from win32gui import GetWindowText, GetForegroundWindow
+# from win32gui import GetWindowText, GetForegroundWindow
 from translate import Translator
 import langid
 import os
@@ -29,9 +29,7 @@ import subprocess
 import hashlib
 import base64
 
-
-
-#get username and shit from the json file
+# get username and shit from the json file
 
 settingsfile = open("json-files/settings.json", "r")
 settingsdata = json.load(settingsfile)
@@ -41,18 +39,23 @@ password = settingsdata['login']['password']
 
 entrances = settingsdata['entrances']['entrances']
 
+
 def logchat():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     logchat = settingsdata['OtherInfo']['LogChat']
     settingsfile.close()
     return logchat
+
+
 def trustedUser():
     settingsfile = open("json-files/settings.json")
     settingsdata = json.load(settingsfile)
     trustedUsers = settingsdata['OtherInfo']['trustedUser']
     settingsfile.close()
     return trustedUsers
+
+
 def get_version():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
@@ -61,6 +64,7 @@ def get_version():
     checkVersion()
     return version
 
+
 def whatsnew():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
@@ -68,31 +72,39 @@ def whatsnew():
     settingsfile.close()
     return whatsnew
 
+
 def get_radio():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     radiolink = settingsdata['radioShit']['radioURL']
     settingsfile.close()
     return radiolink
+
+
 def get_broadcastlink():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     broadcastlink = settingsdata['radioShit']['broadcastURL']
     settingsfile.close()
     return broadcastlink
+
+
 def get_name():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     name = settingsdata['OtherInfo']['name']
     settingsfile.close()
     return name
+
+
 def get_deeplkey():
     settingsfile = open("json-files/settings.json", "r")
     settingsdata = json.load(settingsfile)
     deeplkey = settingsdata['OtherInfo']['DeeplKey']
     settingsfile.close()
     return deeplkey
-#random stuff
+# random stuff
+
 
 def get_jokes():
     file = open("json-files/random.json", "r")
@@ -100,18 +112,24 @@ def get_jokes():
     jokes = data['jokes']
     joke = random.choice(jokes)
     return joke
+
+
 def get_drink():
     file = open("json-files/random.json", "r")
     data = json.load(file)
     drinks = data['drinks']
     drink = random.choice(drinks)
     return drink
+
+
 def get_cuss_word():
     file = open("json-files/random.json", "r")
     data = json.load(file)
     words = data['cuss_words']
     word = random.choice(words)
     return word
+
+
 def get_insults():
     file = open("json-files/random.json", "r")
     data = json.load(file)
@@ -120,38 +138,40 @@ def get_insults():
     return insult
 
 
+# selinum shit
 
 
-#selinum shit
 opts = Options()
 opts.add_argument("--headless")
 browser = webdriver.Firefox(options=opts)
 browser.get("https://y99.in/web/login/")
 a = ActionChains(browser)
 
-##get into y99
+
+# get into y99
 time.sleep(5)
-#access y99
+# access y99
 browser.find_element(By.CLASS_NAME, 'blue--text.login-instead').click()
-#user and password
+# user and password
 browser.find_element(By.CLASS_NAME, 'input-username').send_keys(username)
 browser.find_element(By.CLASS_NAME, 'input-username.mt-1').send_keys(password)
 browser.find_element(By.CLASS_NAME, 'mx-0.btn.btn--large.btn--depressed.e4jtrd').click()
 print("Logged in")
-#get past staging page
+# get past staging page
 time.sleep(5)
 browser.find_element(By.XPATH, '//*[@id="welcome-page"]/div/div[3]/button').click()
 print("past the staging page")
-#get rid of popup
+# get rid of popup
 time.sleep(3)
 browser.find_element(By.XPATH, '//*[@id="app"]/div[9]/div/div/div[3]/button[1]').click()
 print("got rid of popup")
 time.sleep(3)
-#hop into deep's chat
+# hop into deep's chat
 print("entering the chat")
 time.sleep(5)
 browser.find_element(By.XPATH, '//*[@id="app"]/div[23]/div[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[3]').click()
 print("entered the chat")
+
 
 def getVersion():
     file = open("json-files/settings.json", "r")
@@ -160,10 +180,12 @@ def getVersion():
     ver, version, codename = version.split(" ")
     return version
 
+
 def saveVersion():
     version = getVersion()
     with open("version.txt", "r+") as f:
         f.write(version)
+
 
 def checkVersion():
     installedVersion = getVersion()
@@ -184,11 +206,13 @@ def checkVersion():
         print("content not found")
 
 
-#reading and stripping down the messages so that they can be proccesses by the bot
+# reading and stripping down the messages so that they can be proccesses by the bot
 def read_messages():
     raw_text = str(browser.find_elements(By.XPATH, '//*[@class="log-container may-transform"]')[-1].text)
     return raw_text
-#timer
+# timer
+
+
 def timer(h, m, s, user):
     finished = False
     total_seconds = h * 3600 + m * 60 + s
@@ -197,19 +221,26 @@ def timer(h, m, s, user):
         time.sleep(1)
         total_seconds -= 1
     send_message("/runban " + user)
-#sending messages
+# sending messages
+
+
 def send_message(message):
     time.sleep(1)
     browser.find_element(By.XPATH, '//*[@id="app"]/div[23]/div[1]/div[2]/div[8]/div[3]/div[1]/div[5]/div[2]/div/div/textarea').send_keys(message)
     browser.find_element(By.XPATH, '//*[@id="app"]/div[23]/div[1]/div[2]/div[8]/div[3]/div[1]/div[5]/div[2]/div/div/div[4]').click()
+
+
 def err(errcode):
     writeToLogs("ERROR - " + users + " " + errcode)
     send_message(errcode)
 
+
 saveVersion()
 checkVersion()
 send_message(random.choice(entrances))
-#filesay
+# filesay
+
+
 def filesay():
     try:
         useless, url = str3.split(" ", maxsplit=1)
@@ -220,23 +251,31 @@ def filesay():
     for shit in contents:
         send_message(shit)
         time.sleep(3)
-#time
+# time
+
+
 def read_time():
     now = datetime.datetime.now()
     now = now.strftime("%H:%M:%S")
     proper_time = str("The time in UTC 6 is " + str(now))
     send_message(str(proper_time))
-#date
+# date
+
+
 def read_date():
-        print("date command recognized")
-        send_message(str(date.today()))
-#vaduz
+    print("date command recognized")
+    send_message(str(date.today()))
+# vaduz
+
+
 def get_vaduz_time():
     print("vaduz command recogized")
     utc_utc_vaduz = datetime.datetime.now(pytz.timezone('Europe/Vaduz'))
     vaduzTime = utc_utc_vaduz.strftime('%d/%m/%Y %H:%M:%S %Z %z')
     send_message(str(vaduzTime))
-#timezones
+# timezones
+
+
 def timez():
     writeToLogs("INFO - [" + users + " used the timez command]")
     goodies = str3.split(" ")
@@ -250,7 +289,7 @@ def timez():
         send_message(users + " you caused this error " + str(e))
 
 
-#station
+# station
 def get_station():
     print("station command recognized")
     http = urllib3.PoolManager()
@@ -259,53 +298,55 @@ def get_station():
         send_message("The station is broadcasting")
     except:
         send_message("the station is not broadcasting")
-#like
+
+
+# UCAL
+
+
+# like
+
+
 def get_like():
-    bannedChars = ["[", "]", "{", "}", "."]
+    bannedChars = ["['", "']", "{'", "'}", "."]
     try:
         goodies, thingTheyLike = str3.split(" ", maxsplit=1)
+        thingTheyLike.strip(bannedChars)
     except:
         pass
-    try:
-        if bannedChars in thingTheyLike:
-            send_message("fuck off")
-    else:
-            with open("json-files/likes.json", 'r') as f:
-                data = json.load(f)
-                if users in data:
-                    data[users].append(thingTheyLike)
-                    send_message("it's offical, " + users + " likes " + thingTheyLike)
-                else:
-                    data[users] = [thingTheyLike]
-                    send_message("It's offical, " + users + " likes " + thingTheyLike)
-            with open("json-files/likes.json", 'w') as f:
-                json.dump(data, f, indent=4)
-    except:
-        send_message("reid is way too fucking lazy to fix this bug")
-#hate
+    with open("json-files/likes.json", 'r') as f:
+        data = json.load(f)
+        if users in data:
+            data[users].append(thingTheyLike)
+            send_message("it's offical, " + users + " likes " + thingTheyLike)
+        else:
+            data[users] = [thingTheyLike]
+            send_message("It's offical, " + users + " likes " + thingTheyLike)
+    with open("json-files/likes.json", 'w') as f:
+        json.dump(data, f, indent=4)
+# hate
+
+
 def get_hate():
     bannedChars = ["[", "]", "{", "}", "."]
     try:
         goodies, thingTheyLike = str3.split(" ", maxsplit=1)
+        thingTheyLike.strip(bannedChars)
     except:
         pass
-    try:
-        if bannedChars in thingTheyLike:
-            send_message("fuck off")
     else:
-            with open("json-files/hate.json", 'r') as f:
-                data = json.load(f)
-                if users in data:
-                    data[users].append(thingTheyLike)
-                    send_message("it's offical, " + users + " hates " + thingTheyLike)
-                else:
-                    data[users] = [thingTheyLike]
-                    send_message("It's offical, " + users + " hates " + thingTheyLike)
-            with open("json-files/hate.json", 'w') as f:
-                json.dump(data, f, indent=4)   
-    except:
-        send_message("reid just can't be bothered")
-#read the likes
+        with open("json-files/hate.json", 'r') as f:
+            data = json.load(f)
+            if users in data:
+                data[users].append(thingTheyLike)
+                send_message("it's offical, " + users + " hates " + thingTheyLike)
+            else:
+                data[users] = [thingTheyLike]
+                send_message("It's offical, " + users + " hates " + thingTheyLike)
+        with open("json-files/hate.json", 'w') as f:
+            json.dump(data, f, indent=4)
+# read the likes
+
+
 def read_likes():
     with open("json-files/likes.json", 'r') as f:
         data = json.load(f)
@@ -313,7 +354,9 @@ def read_likes():
             send_message(users + " likes " + str(data[users]))
         else:
             send_message("sorry, you were not found in the file")
-#read the hates
+# read the hates
+
+
 def read_hate():
     with open("json-files/hate.json", 'r') as f:
         data = json.load(f)
@@ -321,7 +364,9 @@ def read_hate():
             send_message(users + " hates " + str(data[users]))
         else:
             send_message("sorry, you were not found in the file")
-#backlog
+# backlog
+
+
 def assign_backlog():
     goodies = str3.split(".")
     goodies = goodies[1].split(" ")
@@ -333,13 +378,17 @@ def assign_backlog():
     except IndexError:
         err("Unexpected IndexError, please see above command")
         send_message("please read usage")
-#read the backlog
+# read the backlog
+
+
 def read_backlog():
     usernames = open("./syscrit/people/backlog.txt", "r")
     usernames = str(usernames.read())
     usernames = usernames.replace("\n", " ")
     send_message(usernames)
-#translate
+# translate
+
+
 def get_transtlation():
     auth_key = get_deeplkey()
     goodies = str3.split(" ", maxsplit=1)
@@ -350,50 +399,34 @@ def get_transtlation():
     except:
         err("Unexpected translation error has occured")
         send_message("please see the usages for proper language formatting")
-#auto backlog
-def auto_backlog():	
-    for i in backlog_keywords:
-        if i in str3:
-            send_message("you have said a word or phrase that has triggered my auto backlog, please see the rules")
-            with open("./syscrit/backlog.txt", "a") as f:
-                f.write(users + "\n")
-                f.close()
-            send_message("okay " + users + " added to the backlog, if you think this is an error, please tell R_Powell")
-#news
-#def get_news():
-    #title = []
-    #api_key = "a0606776aad44222b891df427a5e96a5"
-    #newsapi = NewsApiClient(api_key)
-    #goodies = str3.split(" ")
-    #top_headlines = newsapi.get_top_headlines(sources='reuters', language='en', page_size=1)
-    #for i in top_headlines['articles']:
-        #headline = i['title']
-        #url = i['url']
-        #break
-    #send_message("Reuters: " +  headline + " | url: " + url)
-#soft blacklist
+# auto backlog
+
+# soft blacklist
+
+
 def check_blacklist():
     blacklists = open("./syscrit/people/blacklist.txt", "r")
     blacklists = str(blacklists.read())
     true_blacklist = blacklists.split("\n")
     return true_blacklist
-#urban dictionary
+# urban dictionary
+
+
 def get_urban_dictionary_definition(term):
     url = f"https://api.urbandictionary.com/v0/define?term={term}"
-    
     try:
         response = requests.get(url)
         data = response.json()
-        
         if "list" in data and len(data["list"]) > 0:
             first_definition = data["list"][0]["definition"]
             return first_definition
         else:
             return "No definition found."
-    
     except:
         err("Unknown error has occured")
-def ud():	
+
+
+def ud():
     goodies = str3.split(" ", maxsplit=1)
     try:
         definition = get_urban_dictionary_definition(goodies[1])
@@ -401,7 +434,9 @@ def ud():
     except:
         writeToLogs("ERROR - [" + users + " caused an IndexError]")
         send_message(users + " you have caused an IndexError, please read the usage and try again")
-#voting
+# voting
+
+
 def vote():
     goodies = str3.split(" ")
     try:
@@ -415,7 +450,9 @@ def vote():
                 send_message(users + " voted against")
     except:
         err("Voting error, this user is either not allowed to vote or something else has happened")
-#counting votes
+# counting votes
+
+
 def count_votes():
     yay = []
     nay = []
@@ -430,23 +467,31 @@ def count_votes():
             nay.append(line)
     fixednay = [*set(nay)]
     send_message("yay: " + str(len(fixedyay)) + " nay: " + str(len(fixednay)))
-#writing to logs
+# writing to logs
+
+
 def writeToLogs(message):
-            now1 = datetime.datetime.now()
-            now = now1.strftime('%Y-%m-%d %H:%M:%S')
-            now2 = now1.strftime('%Y-%m-%d')
-            file = "./logs/" + now2 + ".log" 
-            hashpath = "./hashes/" + now2 + ".hash"
-            with open(file, "a+")  as f:
-                f.write(str(now) + " - " + message +"\n")
-            hashfile(file, hashpath)
+    now1 = datetime.datetime.now()
+    now = now1.strftime('%Y-%m-%d %H:%M:%S')
+    now2 = now1.strftime('%Y-%m-%d')
+    file = "./logs/" + now2 + ".log"
+    hashpath = "./hashes/" + now2 + ".hash"
+    with open(file, "a+") as f:
+        f.write(str(now) + " - " + message +"\n")
+    hashfile(file, hashpath)
+
+# this is for hashing the files
+
+
 def hashfile(file, hashpath):
     file = open(file, "rb")
     file = file.read()
     m = hashlib.sha3_512(file).hexdigest()
     with open(hashpath, "w+") as f:
         f.write(str(m))
-#check the hash
+# check the hash
+
+
 def check_hash():
     try:
         now = datetime.datetime.now()
@@ -464,41 +509,35 @@ def check_hash():
         m = hashlib.sha3_512(file).hexdigest()
         if hashpath != str(m):
             send_message("THE LOG HAS FAILED ITS VALIDATION CHECK, SOMEONE HAS TAMPERED WITH THE LOG FILE")
-            writeToLogs("ERROR ERROR ERROR - logs failed validation check")            
+            writeToLogs("ERROR ERROR ERROR - logs failed validation check")
     except:
         send_message("something has happened and Reid is too lazy to fix it")
-#What Is Reid Doing
-# gets the active window
-def getWin():
-    activeWin = GetWindowText(GetForegroundWindow())
-    return activeWin
-#the rules
-def switch(lang):
-    if "VSCodium" in lang:
-        goodies = lang.split("-") #	 The format will be: folder - file - app
-        activity =  goodies[1] + "/" + goodies[0]
-        activity = activity.replace(" ", "")
-        return "Coding in " + activity
-    else:
-        return lang
-#checking the issues
+
+
+# checking the issues
 def check_issue():
     with open("./syscrit/voting/issue.txt", "r") as f:
         line = f.readline()
         send_message(line)
-#hard blacklist
+# hard blacklist
+
+
 def check_Hblacklist():
     blacklists = open("./syscrit/people/hard_blacklist.txt", "r")
     blacklists = str(blacklists.read())
     true_Hblacklist = blacklists.split("\n")
-    return true_Hblacklist        
-#read the rules
+    return true_Hblacklist
+# read the rules
+
+
 def read_rules():
-    f = open("rules.txt", "r") 
+    f = open("rules.txt", "r")
     rules = str(f.read())
     rules = rules.split('\n')
     for rule in rules:
         send_message(rule)
+
+
 def srule():
     goodies = str3.split(" ")
     f = open("rules.txt", "r")
@@ -510,13 +549,17 @@ def srule():
     except IndexError:
         writeToLogs("ERROR - something went wrong with reading a specific line from a file")
         send_message("are you possibly using the wrong command? This one is for reading a specific rule, not all of them")
-#read the mini mods
+# read the mini mods
+
+
 def read_mMods():
     f = open("./syscrit/people/minimods.txt", "r")
     lin = f.read()
     lines = lin.split('\n')
     return lines
-#mini mod test
+# mini mod test
+
+
 def mmtest():
     successful = False
     if users in mini_mod:
@@ -525,13 +568,17 @@ def mmtest():
     else:
         send_message("you are not permitted to use this command")
     return successful
-#read the registered users
+# read the registered users
+
+
 def read_reg_users():
     f = open("./syscrit/people/regusers.txt", "r")
     lin = str(f.read())
     lines = lin.split('\n')
     return lines
-#mini mod echo
+# mini mod echo
+
+
 def echo():
     goodies = str3.split("/")
     try:
@@ -539,12 +586,16 @@ def echo():
     except:
         writeToLogs("ERROR - [" + users + " has caused an IndexError]")
         send_message(users + " you have cause and IndexError, please read usage and try again")
-#mods
+# mods
+
+
 def get_mods():
     f = open("./syscrit/people/mods.txt")
     lin = f.read()
     return lin
 # casting electoral votes
+
+
 def cast_vote():
     goodies = str3.split(" ")
     try:
@@ -572,6 +623,8 @@ def cast_vote():
         send_message(users + " you have caused this error: " + str(e))
 
 # sort and then send out the values
+
+
 def sort_results():
     file = open("json-files/elect.json", "r")
     data = json.load(file)
@@ -579,16 +632,20 @@ def sort_results():
     sorted_data = dict(sorted(data.items(), key=lambda x: x[1], reverse=True))
     writeToLogs("INFO - the results have been sorted")
     send_message(str(sorted_data))
-#ballot
+# ballot
+
+
 def get_ballot():
     writeToLogs("INFO - [" + users + " requested the ballot]")
     send_message("please vote for these people with canidate instead of their name")
     f = open("./syscrit/voting/ballot.txt")
     f = f.read()
     f = f.split("\n")
-    for canidate in f:	
+    for canidate in f:
         time.sleep(2)
         send_message(canidate)
+
+
 def wheelie():
     goodies = str3.split(" ")
     manfile = open("json-files/manual.json", "r")
@@ -599,7 +656,7 @@ def wheelie():
     except:
         writeToLogs("ERROR = [" + users + " caused an IndexError]")
         send_message(users + " you have cause and IndexError, please read the usage of this command by doing (.)wheelie wheelie")
-    try:    
+    try:
         send_message("Name: " + man[command]['name'])
         time.sleep(2)
         send_message("Description: " + man[command]['description'])
@@ -608,7 +665,9 @@ def wheelie():
     except:
         writeToLogs("ERROR - [" + users + " caused an error with the wheelie command")
         send_message("you have caused an error, please try again")
-#fight
+# fight
+
+
 def fight():
     basescore1 = 500
     basescore2 = 500
@@ -639,7 +698,9 @@ def fight():
         send_message(un2 + " won this fight")
     if basescore1 == basescore2:
         send_message("It's a tie")
-#muting people
+# muting people
+
+
 def mute():
     messages = []
     file = open("mute.txt", "r")
@@ -655,16 +716,22 @@ def mute():
             a.move_to_element(f)
             a.click()
             fuckingwork()
+
+
 def fuckingwork():
     element = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.XPATH, "//div[@class='list__tile__title' and text()='Delete Message']")))
 # Click on the element
     a.click(element)
+
+
 def arabic():
     lang = langid.classify(str3)
     translator = Translator(from_lang='ar', to_lang='en')
     if lang[0] == 'ar':
         translated = translator.translate(str3)
         send_message(translated)
+
+
 def shell():
     command = str3
     command = command.replace(".sh ", "")
@@ -672,9 +739,10 @@ def shell():
     com = subprocess.Popen((command), shell=True, stdout=subprocess.PIPE).stdout
     com = com.read()
     send_message(com.decode())
-#custom messages
+# custom messages
+
+
 def custom_messages():
-    is_there = False
     f = open("json-files/cMessages.json", "r")
     data = json.load(f)
     if users in data['custom_messages']:
@@ -683,7 +751,7 @@ def custom_messages():
         send_message(users + " what?")
 
 
-#important bits for later
+# important bits for later
 skip = False
 lastmsg = ""
 lastusr = ""
@@ -697,17 +765,16 @@ while True:
     name = get_name()
     regged_users = read_reg_users()
     mini_mod = read_mMods()
-    shit = read_messages() #this is the raw text that needs to be refined
-    shittles = shit.split("\n") # this is splitting it into strings
-    if len(shittles) == 3: #check to see if user has no pfp
+    shit = read_messages()  # this is the raw text that needs to be refined
+    shittles = shit.split("\n")  # this is splitting it into strings
+    if len(shittles) == 3:  # check to see if user has no pfp
         shittles.remove(shittles[1])
-        
     try:
-        users = shittles[0] # usernames will always be first
-        str3 = shittles[1] # message
+        users = shittles[0]  # usernames will always be first
+        str3 = shittles[1]  # message
         if len(users) == 3:
             users = lastusr
-        lastusr = users  
+        lastusr = users
     except:
         str3 = read_messages()
         users = lastusr
@@ -717,7 +784,7 @@ while True:
             print("[" + users + "]")
             print(str3)
             lastmsg = str3
-            if logging == True:
+            if logging is True:
                 writeToLogs(users + " - " + str3)
     except:
         pass
@@ -729,25 +796,25 @@ while True:
         check_hash()
         true_blacklist = check_blacklist()
         hard_blacklist = check_Hblacklist()
-#check if user is in the blacklist
+# check if user is in the blacklist
         if users in true_blacklist and "." in str3:
             send_message("this user is not allowed to use commands | if you feel this is a mistake, contact one of the devs")
-            writeToLogs( "WARN - " + users + " Tried to use a command")
+            writeToLogs("WARN - " + users + " Tried to use a command")
             str3 = " "
             true_blacklist.clear()
-#check if user is in the hard blacklist
+# check if user is in the hard blacklist
         if users in hard_blacklist:
             writeToLogs("WARN - " + users + " tried to use a command")
             str3 = " "
             users = "blacklisted"
             hard_blacklist.clear()
 
-#patreon
+# patreon
         if ".patreon" in str3:
             send_message("these APIs arent cheap man")
             time.sleep(2)
             send_message("patreon.com/R_powell")
-#filesay
+# filesay
         if ".filesay" in str3:
             if users in mods:
                 writeToLogs("INFO - [" + users + " used the filesay command]")
@@ -755,36 +822,36 @@ while True:
             else:
                 writeToLogs("WARN - [" + users + " tried to use a mod command")
                 send_message("you are not allowed to use this command")
-#time
+# time
         if ".time" in str3:
             writeToLogs("INFO - [" + users + " checked the time]")
             read_time()
-#breakout
+# breakout
         if ".breakout" in str3:
             send_message("User1894284908")
-#date
+# date
         if ".date" in str3:
             writeToLogs("INFO - [" + users + "checked the date]")
             read_date()
-#version
+# version
         if ".ver" in str3:
             writeToLogs("INFO - [" + users + " checked the version]")
             send_message(get_version())
-#radio
-        if ".radiostation" in  str3:
+# radio
+        if ".radiostation" in str3:
             print("radio command recognized")
             writeToLogs("INFO - [" + users + " checked out the radio]")
             send_message(get_radio())
-#vaduz
+# vaduz
         if ".vaduz" in str3:
             writeToLogs("INFO - [" + users + " checked the time in vaduz]")
             get_vaduz_time()
-#insult
+# insult
         if ".insult" in str3:
             print("insult command recognized")
             writeToLogs("INFO - [" + users + " wanted an insult]")
             send_message(get_insults())
-#dj
+# dj
         if ".dj" in str3:
             print("DJ command recognized")
             writeToLogs("INFO - [" + users + " checked the DJs]")
@@ -794,7 +861,7 @@ while True:
             print("good night command recognized")
             writeToLogs("INFO - [" + users + " went to bed]")
             send_message("good night my little pumpkin boo")
-#drinks
+# drinks
         if ".drink" in str3:
             writeToLogs("INFO - [" + users + " wanted a drink]")
             goodies = str3.split(" ")
@@ -802,35 +869,35 @@ while True:
                 send_message("pheebs sends " + goodies[1] + " " + get_drink())
             except:
                 send_message("pheebs sends " + users + " " + get_drink())
-#station
+# station
         if ".station" in str3:
             writeToLogs("INFO - [" + users + " wanted the station]")
             get_station()
-#ping pong
+# ping pong
         if ".ping" in str3:
             writeToLogs("INFO - [" + users + " pinged the bot]")
             send_message("poooooong")
-#ping deep
+# ping deep
         if ".deep" in str3:
             send_message("Deepestdeep")
-#dev Help
+# dev Help
         if ".devhelp" in str3:
             send_message("ping - ping pong command | deep - pings deep")
-#cuss command for version 1.0
+# cuss command for version 1.0
         if ".cuss" in str3:
             print("cuss command recognized")
             writeToLogs("INFO - [" + users + " cussed]")
             send_message(get_cuss_word())
-#sex
+# sex
         if ".sex" in str3:
             print("sex command recognized")
             writeToLogs("INFO - [" + users + " used the sex command]")
             send_message("congrats " + users + " is kind of a weirdo")
-#docs
+# docs
         if ".docs" in str3:
             writeToLogs("INFO - [" + users + " wanted to check out the source]")
             send_message("https://github.com/RPowell-C/BotDocs/")
-#dev
+# dev
         if ".dev" in str3:
             writeToLogs("INFO - [" + users + " wanted to know who the devs were]")
             send_message("Reid Powell - Lead Developer - R_Powell")
@@ -840,12 +907,11 @@ while True:
             send_message("Mikael Varashovsky - Developer - Mikaelvussy")
             time.sleep(3)
             send_message("michaelangelo - Developer")
-#credits
+# credits
         if ".creds" in str3:
             send_message("Developers - See dev command")
             time.sleep(3)
-            #send_message("PFP - KatB")
-#Like
+# Like
         if ".ilike" in str3:
             writeToLogs("INFO - [" + users + " liked something]")
             send_message("This command was disabled after a security vulnerability was found")
@@ -853,22 +919,22 @@ while True:
                 #get_like()
             #except Exception as e:
                 #send_message(str(e))
-#hate
+# hate
         if ".ihate" in str3:
             writeToLogs("INFO - [" + users + "hated something")
             send_message("This command was disabled after a security vulnerablitly was found")
             #get_hate()
-#read likes
+# read likes
         if ".like" in str3:
             writeToLogs("INFO - [" + users + "checked the likes]")
             send_message("This command was disabled after a security vulnerability was found")
             #read_likes()
-#read hates 
+# read hates
         if ".hate" in str3:
             writeToLogs("INFO - [" + users + "checked the hates]")
             send_message("This command was disabled after a security vulnerability was found")
             #read_hate()
-#backlog
+# backlog
         if ".mmreport" in str3:
             if users in mini_mod:
                 writeToLogs("INFO - [" + users + " used a mini mod command]")
@@ -876,63 +942,55 @@ while True:
             else:
                 writeToLogs("WARN - [" + users + " tried to use a mini mod command]")
                 send_message("You do not have permission to use this command")
-#bl
+# bl
         if ".bl" in str3:
             read_backlog()
-#love
-        #if ".love" in str3:
-            #send_message("woah, I'm just a bot")
-#alert 
+# alert
         if ".alert" in str3:
             try:
 
                 writeToLogs("INFO - [" + users + " pulled up the alert board]")
-                ausers = open("./syscrit/people/alert.txt", "r") 
+                ausers = open("./syscrit/people/alert.txt", "r")
                 send_message(str(ausers.read()))
             except:
                 writeToLogs("UnicodeEncodeError")
-#whatsnew
+# whatsnew
         if ".whatsnew" in str3:
             writeToLogs("INFO - [" + users + " wanted to know whats new]")
             print("someone wants to know whats new")
             send_message(whatsnew())
-#jokes 
+# jokes 
         if ".joke" in str3:
             writeToLogs("INFO - [" + users + " wanted a joke]")
             print("someone wants a joke")
             send_message(get_jokes())
-#I wanna DJ
+# I wanna DJ
         if ".iwannadj" in str3:
             writeToLogs("INFO - [" + users + " wants to DJ]")
             send_message("If you would like to DJ please fill out this form:")
             time.sleep(3)
             send_message("https://docs.google.com/forms/d/e/1FAIpQLSdfIL1c51YLc32DWwyeiZpRVGbZL6C4h4nHYK8NP9t8L-b21Q/viewform?usp=sf_link")
-#I wanna be a dev
+# I wanna be a dev
         if ".iwannadev" in str3:
             writeToLogs("INFO - [" + users + " wanted to dev]")
             send_message("Talk to R_Powell")
-#fuck you shoresy
-        if ".lkenny" in str3:
-            writeToLogs("INFO - [" + users + " wanted a random letterkenny quote]")
-            print("someone said fuck you")
-            send_message(random.choice(fuckyouShorsey))
-#translate
+# translate
         if ".translate" in str3:
             writeToLogs("INFO - [" + users + " translated some text]")
             get_transtlation()
-#langhelp
+# langhelp
         if ".langhelp" in str3:
             writeToLogs("INFO - [" + users + " needed some langhelp]")
-            auth_key = "d3fa9b35-f33c-14e8-075b-54b3705f5ee4:fx"
+            auth_key = get_deeplkey()
             translator = deepl.Translator(auth_key)
             for language in translator.get_target_languages():
                 send_message(str(f"{language.name} ({language.code})"))
                 time.sleep(2)
-#you're welcome
+# you're welcome
         if "Thank you" in str3:
             print("someone said thank you")
             send_message("you're very much welcome")
-#someone mentions her
+# someone mentions her
         if name in str3:
             if "." in str3:
                 err("ME01")
@@ -940,17 +998,11 @@ while True:
             else:
                 writeToLogs("INFO - [" + users + " tagged the bot]")
                 custom_messages()
-#auto backlog
-        #auto_backlog()
-#news
-        #if ".news" in str3:
-            #writeToLogs("INFO - [" + users + " wanted the news]")
-            #get_news()
-#urban dictionary
+# urban dictionary
         if ".urbandict" in str3:
             writeToLogs("INFO - [" + users + " used urban dict]")
             ud()
-#voting system
+# voting system
         if ".issue" in str3:
             writeToLogs("INFO - [" + users + " checked the issue]")
             check_issue()
@@ -964,33 +1016,33 @@ while True:
         if ".countvotes" in str3:
             writeToLogs("INFO - [" + users + " counted the votes]")
             count_votes()
-#disclosure
+# disclosure
         if ".disclosure" in str3:
             writeToLogs("INFO - [" + users + " requested the disclosure]")
             with open("disclosure.txt", "r") as f:
                 line = f.readline()
                 send_message(line)
-#birthday
+# birthday
         if ".bday" in str3:
             writeToLogs("INFO - [" + users + " wanted to know the bot's birthday]")
             send_message("May 3, 2023")
-#good morning
+# good morning
         if ".gm" in str3:
             writeToLogs("INFO - [" + users + " said good morning]")
             send_message("good morning, sleepy head")
-#rules
+# rules
         if ".allrules" in str3:
-            writeToLogs("INFO - [" + users + " read the rules]") 
+            writeToLogs("INFO - [" + users + " read the rules]")
             read_rules()
-#mini mods test
+# mini mods test
         if ".mmtest" in str3:
             result = mmtest()
             writeToLogs("INFO - [" + users + " tried to use a mini mod command, it was " + str(result) + "]")
-#specific rules
+# specific rules
         if ".srule" in str3:
             writeToLogs("INFO - [" + users + " read a specific file]")
             srule()
-#mini mod echo
+# mini mod echo
         if ".mmecho" in str3:
             if users in mini_mod:
                 writeToLogs("INFO - [" + users + " Echoed]")
@@ -998,7 +1050,7 @@ while True:
             else:
                 writeToLogs("WARN - [" + users + "tried to use a mini mod command]")
                 send_message("you are not allowed to use this command")
-#mini mod get mods
+# mini mod get mods
         if ".mmgetmod" in str3:
             if users in mini_mod:
                 writeToLogs("INFO - [" + users + " requested a mod]")
@@ -1006,40 +1058,35 @@ while True:
             else:
                 writeToLogs("WARN - [" + users + " tried to use a mini mod command]")
                 send_message("you are not allowed to use this command")
-#logs
+# logs
         if ".logs" in str3:
             send_message("due to a vote taken, the logs are here: https://github.com/RPowell-C/BotLogs/blob/main/chatlog.txt")
-#get results
+# get results
         if ".results" in str3:
             if users in trustedUsers:
                 sort_results()
             else:
                 writeToLogs("ERROR - [" + users + "tried to access election results]")
-#cast vote
+# cast vote
         if ".castfor" in str3:
             f = open("./syscrit/people/regusers.txt")
             f = f.read()
             if users in f:
-               cast_vote()
+                cast_vote()
             else:
                 writeToLogs("WARNING - [" + users + " tried to write to logs]")
                 send_message("you are not authorized to do that")
-#ballot
+# ballot
         if ".ballot" in str3:
             get_ballot()
-#WIRD (What Is Reid Doing)
-        if ".wird" in str3:
-            #lang = getWin()
-            #send_message(switch(lang))
-            send_message("Reid is currently on a business trip to Athens, Mishka has control over the bot now")
-#wheelie
+# wheelie
         if ".wheelie" in str3:
             writeToLogs("INFO - [" + users + " used the wheelie command")
             wheelie()
-#wew
+# wew
         if "wew" in str3:
             send_message("what is that?")
-#fight
+# fight
         if ".fight" in str3:
             try:
                 writeToLogs("INFO - [" + users + " used the fight command]")
@@ -1047,10 +1094,10 @@ while True:
             except Exception as e:
                 writeToLogs("ERROR - [" + users + "caused " + str(e)+ "]")
                 send_message(str(e))
-#zime
+# zime
         if ".zime" in str3:
             timez()
-#shell
+# shell
         if ".zsh" in str3:
             if users in trustedUsers:
                 shell()
@@ -1058,7 +1105,6 @@ while True:
                 if ".sh" in users:
                     pass
                 writeToLogs("ERROR WARN ERROR - [" + users + " attempted to use a shell command]")
-                #send_message(users + " you are absoluteley not allowed to use this command and have been reported")
 # crazy
         if "crazy" in str3:
             counter = 0
@@ -1078,9 +1124,7 @@ while True:
                 counter = 0
 
 
-
-
-#help
+# help
         if ".help" in str3:
             writeToLogs("INFO - [" + users + " needed help]")
             print("someone asked for help")
