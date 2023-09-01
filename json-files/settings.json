@@ -1,0 +1,54 @@
+{
+	"core": 
+		{
+			"username" : "",
+			"password" : "",
+            "entrances" : [],
+            "name" : "",
+            "version" : "version 2.0.0 Hephaestus",
+            "trustedUsers" : [""]
+		},
+	"radio" :
+		{
+			"radioURL" : "",
+			"broadcastURL" : ""
+		},
+    "keys" :
+    {
+        "DeeplKey" : ""   
+    },
+	"functionSettings" :
+	{
+		"LogChat" : true,
+        "useHelp" : true,
+        "useFilesay" : true,
+        "useReadTime" : true,
+        "useReadDate" : false,
+        "useTimez" : true,
+        "useUCAL" : true,
+        "useGetLike" : false,
+        "useGetHate" : false,
+        "useReadLike" : false,
+        "useReadHate" : false,
+        "useBacklog" : true,
+        "useAutoBacklog" : true,
+        "useTranslations" : true,
+        "useUrbandict" : true,
+        "useVote" : true,
+        "useIssues" : true,
+        "useRules" : true,
+        "useSRule" : true,
+        "useMiniMods" : true,
+        "useRegUsers" : true,
+        "useWheelie" : true,
+        "useFight" : true,
+        "useZSH" : true,
+        "useCMessages" : true
+	},
+    "moderation" :
+    {
+        "backlogTriggers" : ["pm me", "hmu"],
+        "miniMods" : [],
+        "useBlacklist" : true
+    }
+}
