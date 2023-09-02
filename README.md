@@ -1,3 +1,6 @@
+# THIS PROJECT HAS BEEN MOVED
+please see https://github.com/teenchatbot/phoibe 
+
 # phoibe-public
 the public version of the bot
 
